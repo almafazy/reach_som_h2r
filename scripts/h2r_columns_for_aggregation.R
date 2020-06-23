@@ -117,11 +117,11 @@ select_multile_col <-c("available_health_services.none", "available_health_servi
   "protection_incidents.sexual_violence", "protection_incidents.theft",
   "protection_incidents.abduction", "protection_incidents.uxo",
   "protection_incidents.conflict_in_set", "protection_incidents.conflict_other_settlement",
-  "protection_incidents.noresponse", "protection_incidents_other"
+  "protection_incidents.noresponse" 
 )
 
 
-not_needed_columns <- c( "start", "end","today", "deviceid","available_health_services", "barriers_health", "barriers_usetoilets",
+not_needed_columns <- c( "start", "end","today", "deviceid", "available_health_services","barriers_health", "barriers_usetoilets",
                         "conflict_causes","conflict_mediators","coping_food_strat","education_available",
                         "idp_arrived_reason", "idp_pull_factors", "incidents_wh_leaving","info_barriers", "info_mainsource", "lack_food_reasons",
                         "left_behind_who", "livelihood_activ", "main_radios", "market_goods", "ngo_support_type","noaccess_health","nomarket_why",
@@ -156,14 +156,19 @@ equal <- c("base",
            "settlement_clinic_other", "settlement_clinic_oth_new", "idp_host_relationships",
            "ppl_no_land_tenure",
            "land_tenure_form", "depart_return_safe", "freedommov_day", "freedommov_night",
-           "shelter_type", "dam_shelters_reason", "dam_shelters_reason_other",
-           "shelters_not_rebuilt", "shelt_not_rebuilt_why", "mainsource_water",
-            "gettingwater_time", "people_using_latrines",
+           "shelter_type", "dam_shelters_reason", 
+          "dam_shelters_reason_other", "shelters_not_rebuilt", "shelt_not_rebuilt_why", 
+          "mainsource_water", "gettingwater_time", "people_using_latrines",
            "waste_disposal", "time_to_school", "education_bar_girls", "education_bar_boys",
            "info_personsource", "road_connection_y_n",
            "still_contact_htr" )
 
 
+
+equal_yes_no <- c(yes_no_colmns, equal)
+
+
+  
 settlement_yes <- df %>%
   select(essential_col, yes_no_colmns) %>%
   group_by_(.dots = c( "calc.region","calc.district","finalsettlment")) %>%
@@ -171,9 +176,17 @@ settlement_yes <- df %>%
 
 
 settlement_equal <- df %>%
-  select(essential_col, equal) %>%
+  select(essential_col, equal_yes_no) %>%
   group_by_(.dots = c( "calc.region","calc.district","finalsettlment")) %>%
   summarise_all(funs(AoK))
+
+
+settlement_equal_yes <- df %>%
+  select(essential_col, equal_yes_no) %>%
+  group_by_(.dots = c( "calc.region","calc.district","finalsettlment")) %>%
+  summarise_all(funs(AoK))
+
+
 
 settlement_mscols <- select_multiple_df %>%
   select(essential_col, select_multile_col) %>%

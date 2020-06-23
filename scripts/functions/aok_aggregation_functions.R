@@ -17,6 +17,7 @@ aok_yes <- function(x) {
 
 }
 
+
 ## Aggregating function to pick "no" over "yes" responses
 
 aok_no <- function(x) {
@@ -57,10 +58,10 @@ aok_mode <- function(x) {
 
 }
 
-
 AoK <- function(x) {
   aok_mode(x)
 }
+
 
 ## Aggregating function to pick most recent responses  over others. For frequency questions
 
@@ -121,7 +122,6 @@ aok_recent <- function(x) {
 }
 
 
-
 ##Aggregating function to pick highest responses  over others.
 
 aok_highest <- function(x) {
@@ -153,7 +153,7 @@ aok_highest <- function(x) {
 }
 
 
-##Aggregating function to pick conflict rekated responses  over others.
+##Aggregating function to pick conflict reated responses  over others.
 
 aok_conflict <- function(x) {
   ux <- unique(x[!is.na(x)])

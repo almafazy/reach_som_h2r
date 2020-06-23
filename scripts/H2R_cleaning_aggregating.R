@@ -122,10 +122,9 @@ if(length(check_these>0)){
 
 #Now we want to clean the data for some skiplogic (SL) errors introduced after settlement level aggregation.
 
-
-
 # KI info
 # left_behind_y_n
+
 
 settlement_data$left_behind_who.men_18_59[settlement_data$left_behind_y_n != "yes"] <- "SL"
 settlement_data$left_behind_who.b_0_11[settlement_data$left_behind_y_n != "yes"] <- "SL"
@@ -136,11 +135,22 @@ settlement_data$left_behind_who.women_18_59[settlement_data$left_behind_y_n != "
 settlement_data$left_behind_who.g_0_11[settlement_data$left_behind_y_n != "yes"] <- "SL"
 settlement_data$left_behind_who.girls_12_17[settlement_data$left_behind_y_n != "yes"] <- "SL"
 
-#pwd
+#pwd_left_behind
 settlement_data$pwd_left_behind[settlement_data$left_behind_y_n != "yes"] <- "SL"
 
+#secondary_reason_moved
+
+settlement_data$secondary_reason_moved[settlement_data$primary_reason_moved == "noresponse" |settlement_data$idp_proportion_settlem == "dontknow" ] <- "SL"
+
+
+
+#Settlement Profile
+#idp_proportion
+
+settlement_data$idp_new_arrivals[settlement_data$idp_proportion_settlem == "no_idps" |settlement_data$idp_proportion_settlem == "dontknow" ] <- "SL"
 
 #idp_new_arrivals
+
 
 settlement_data$idp_arrived_from[settlement_data$idp_new_arrivals != "yes"] <- "SL"
 settlement_data$idp_arrived_from_reg[settlement_data$idp_new_arrivals != "yes"] <- "SL"
@@ -171,7 +181,7 @@ settlement_data$idp_pull_factors.access_food[settlement_data$idp_new_arrivals !=
 
 
 # Food Security and Nutrition
-
+#all answers with SL based on access_market
 #nomarket
 
 settlement_data$nomarket_why.bad_quality[settlement_data$access_market != "no_access"] <- "SL"
@@ -182,14 +192,16 @@ settlement_data$nomarket_why.no_items[settlement_data$access_market != "no_acces
 settlement_data$nomarket_why.security[settlement_data$access_market != "no_access"] <- "SL"
 settlement_data$nomarket_why.no_cash[settlement_data$access_market != "no_access"] <- "SL"
 
-#marketregion
+
 settlement_data$market_region[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
-# marketdistrict
+
 settlement_data$market_district[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
+
 settlement_data$market_settlement[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
+
 settlement_data$distance_to_market[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
 
-#marketgoods
+
 settlement_data$market_goods.clothes_sewing[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
 settlement_data$market_goods.tools_seeds[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
 settlement_data$market_goods.livestock[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
@@ -204,8 +216,6 @@ settlement_data$market_goods.soap[settlement_data$access_market != "yes_always" 
 settlement_data$market_goods.shoes[settlement_data$access_market != "yes_always" & settlement_data$access_market != "yes_restricted" ] <- "SL"
 
 
-
-
 #lackfoods
 settlement_data$lack_food_reasons.noland[settlement_data$skip_meals != "yes"] <- "SL"
 settlement_data$lack_food_reasons.nomarket[settlement_data$skip_meals != "yes"] <- "SL"
@@ -218,6 +228,7 @@ settlement_data$lack_food_reasons_other[settlement_data$skip_meals != "yes"] <- 
 
 
 #Health
+# access_health_services
 
 settlement_data$available_health_services.clinic[settlement_data$access_healthservices != "yes"] <- "SL"
 settlement_data$available_health_services.none[settlement_data$access_healthservices != "yes"] <- "SL"
@@ -231,7 +242,11 @@ settlement_data$available_health_services.healer[settlement_data$access_healthse
 settlement_data$available_health_services.individual_pract[settlement_data$access_healthservices != "yes"] <- "SL"
 settlement_data$available_health_services.drugstore[settlement_data$access_healthservices != "yes"] <- "SL"
 
-#No_Health_Access
+#dist_clinic
+
+settlement_data$distance_clinic[settlement_data$available_health_services.clinic != "yes" & settlement_data$available_health_services.mobile_clinic != "yes"] <- "SL"
+
+#no_access_health
 
 settlement_data$noaccess_health.none[settlement_data$access_healthservices != "yes"] <- "SL"
 settlement_data$noaccess_health.m_over60[settlement_data$access_healthservices != "yes"] <- "SL"
@@ -244,6 +259,70 @@ settlement_data$noaccess_health.b_under18[settlement_data$access_healthservices 
 settlement_data$noaccess_health.w_over60[settlement_data$access_healthservices != "yes"] <- "SL"
 settlement_data$noaccess_health.w_over18[settlement_data$access_healthservices != "yes"] <- "SL"
 
+settlement_data$region_clinic[settlement_data$available_health_services != "clinic" & settlement_data$available_health_services != "mobile_clinic"] <- "SL"
+settlement_data$district_clinic_001[settlement_data$available_health_services != "clinic" & settlement_data$available_health_services != "mobile_clinic"] <- "SL"
+
+
+
+
+# Protection related
+settlement_data$idp_host_relationships[settlement_data$idp_proportion_settlem == "no_idps" | settlement_data$idp_proportion_settlem == "dontknow"] <- "SL"
+
+settlement_data$land_tenure_form[settlement_data$ppl_no_land_tenure == "dontknow" | settlement_data$idp_proportion_settlem == "no"] <- "SL"
+
+
+## protection_inc_location
+
+
+
+settlement_data$protection_inc_location.human_aid_distr[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.school[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.shelters[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.bathing_pl[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.checkpoint[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.dontknow[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.clinic[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.on_the_road[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.latrines[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.near_water[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.in_field[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.other[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+settlement_data$protection_inc_location.market[settlement_data$protection_incidents.dontknow == "yes" | settlement_data$protection_incidents.none == "yes" | settlement_data$protection_incidents.noresponse == "yes"] <- "SL"
+
+
+
+
+
+##Conflict mediators
+
+settlement_data$conflict_mediators.clan_lead[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.gatekeeper[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.none[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.loc_authorities[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.loc_authorities[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.rel_leader[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.health_staff[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.ngo_staff[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.other[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.commun_leader_elder[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.dontknow[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+settlement_data$conflict_mediators.noresponse[settlement_data$protection_incidents == "dontknow" | settlement_data$protection_incidents == "none" | settlement_data$protection_incidents == "noresponse"] <- "SL"
+
+
+
+
+# Shelter and NFI
+
+settlement_data$shelters_not_rebuilt[settlement_data$dam_shelters_reason == "no_destroyed" | settlement_data$dam_shelters_reason == "dontknow" ] <- "SL"
+settlement_data$shelt_not_rebuilt_why[settlement_data$dam_shelters_reason == "no_destroyed" | settlement_data$dam_shelters_reason == "dontknow" ] <- "SL"
+
+settlement_data$surfacewater_drinking[settlement_data$mainsource_water == "berkad" | settlement_data$mainsource_water == "river_pond"] <- "SL"
+
+
+
+# education
+
+settlement_data$time_to_school[settlement_data$education_available.none == "yes" | settlement_data$education_available.dontknow == "yes"] <- "SL"
 
 # ngo support
 
@@ -258,7 +337,6 @@ settlement_data$ngo_support_type.food_distrib[settlement_data$ngo_support_y_n !=
 settlement_data$ngo_support_type.education_service[settlement_data$ngo_support_y_n != "yes"] <- "SL"
 settlement_data$ngo_support_type.construction_materials_nfis[settlement_data$ngo_support_y_n != "yes"] <- "SL"
 settlement_data$ngo_support_type.legal_support[settlement_data$ngo_support_y_n != "yes"] <- "SL"
-
 
 
 
